@@ -1,6 +1,5 @@
 let express = require('express');
 let router = express.Router();
-let passport = require("passport");
 
 let DB = require('../config/db')
 

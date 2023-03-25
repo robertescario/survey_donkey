@@ -1,7 +1,6 @@
 let express = require('express');
 let router = express.Router();
 let mongoose = require('mongoose');
-let passport = require('passport');
 let surveyController = require('../controllers/surveys');
 
 // GET index page of survey
