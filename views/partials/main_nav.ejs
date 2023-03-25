@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-lg">
+	<div class="container d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+		<a class="navbar-brand" href="#">
+			<img src="/images/logo-color.png" width="100" height="100">
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav ml-auto">
+		<% if(title=="Home"){%>
+			<li class="nav-item active">
+		<%}else{%>
+    	<li class="nav-item">
+    <%}%>
+  			<a class="nav-link active" aria-current="page" href="/home"><i class="fa-solid fa-house-chimney"></i>Home</a>
+			</li>
+		<% if(title=="Surveys"){%>
+			<li class="nav-item active">
+  	<%}else{%>
+    	<li class="nav-item">
+    <%}%> 
+  			<a class="nav-link active" aria-current="page" href="/surveys"><i class="fa-solid fa-poll"></i>Surveys</a>
+			</li>
+		</ul>
+		</div>
+	</div>
+</nav>
