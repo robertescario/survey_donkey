@@ -17,16 +17,40 @@ module.exports.displaySurveys = (req, res, next) => {
   }
 
 module.exports.displayAddSurvey = (req, res, next)=>{
-
+	res.render('surveys/add', { title: 'Add Survey' });
 }
 
 module.exports.addSurvey = (req, res, next)=>{
+	// Get form data from request body
+	let newSurvey = Survey({
+	title: req.body.title,
+	description: req.body.description
+	});
+  // Save the new survey to the database
+  newSurvey.save((err) => {
+    if (err) {
+      console.error(err);
+      res.end(err);
+    } else {
+      res.redirect('/surveys');
+    }
+  });
+};
 
-}
 
 module.exports.displayEditSurvey = (req, res, next)=>{
-
-}
+	Survey.findById(req.params.id, (err, survey) => {
+		if (err) {
+		  console.error(err);
+		  res.end(err);
+		} else {
+		  res.render('surveys/details', {
+			title: survey.title,
+			survey: survey
+		  });
+		}
+	  });
+	};
 
 module.exports.editSurvey = (req, res, next)=>{
 
