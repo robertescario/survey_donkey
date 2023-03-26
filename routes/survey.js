@@ -10,9 +10,9 @@ router.get('/add', surveyController.displayAddSurvey);
 // POST the survey data to create record
 router.post('/add', surveyController.addSurvey);
 // GET the EDIT survey form
-router.get('/edit/:id', surveyController.displayEditSurvey);
+router.get('/:id/edit', surveyController.displayEditSurvey);
 // POST the survey data to update record with id = :id
-router.post('/edit/:id', surveyController.editSurvey);
+router.post('/:id/edit', surveyController.editSurvey);
 // GET the page to show survey details
 router.get('/:id', surveyController.displaySurvey);
 // GET process the delete record by survey id
