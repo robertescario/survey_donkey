@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+<%-include('../partials/main_nav.ejs')%>
+
+<!-- Content for the Add page -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h3 class="text-center"> Edit Survey</h1>    
+
+            <form class="form" method="POST" >
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="title">Title:</label>
+                    <input type="text" class="form-control" id="title" 
+                    placeholder="Enter survey title"  name="title" required  value="<%= survey.title %>">
+                  </div>
+                  <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="description">Description:</label>
+                    <input type="text" class="form-control" id="description" rows="3"
+                     name="description" required  value="<%= survey.description %>">
+                  </div>
+                  <div class="text-center">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-edit"></i> Submit</button>
+                
+                    <a href="/surveys" class="btn btn-danger">
+                        <i class="fas fa-undo"></i> Cancel</a>
+</div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<%- include('../partials/footer') %>

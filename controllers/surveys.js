@@ -43,20 +43,44 @@ module.exports.addSurvey = (req, res, next)=>{
 };
 
 module.exports.displayEditSurvey = (req, res, next)=>{
+  let id = req.params.id;
   Survey.findById(req.params.id, (err, survey) => {
     if (err) {
       console.error(err);
       res.end(err);
     } else {
-      res.render('surveys/details', {
-        title: survey.title,
+      res.render('surveys/edit', {
+      title:survey.title,
+        description:survey.description,
         survey: survey
       });
     }
   });
+                   
 };
 
 module.exports.editSurvey = (req, res, next)=>{
+
+  let id = req.params.id
+
+  let updatedSurvey = Survey({
+     _id : id,
+      title: req.body.title,
+      description : req.body.description
+    });
+    Survey.updateOne({_id: id}, updatedSurvey, (err) => {
+      if(err)
+      {
+          console.log(err);
+          res.end(err);
+      }
+      else
+      {
+          // refresh the book list
+          res.redirect('/surveys');
+      }
+  });
+ 
 
 };
 
