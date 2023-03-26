@@ -65,5 +65,19 @@ module.exports.displaySurvey = (req, res, next)=>{
 };
 
 module.exports.destroySurvey = (req, res, next)=>{
+    let id = req.params.id;
+    Survey.remove({_id:id},(err)=>{
+        if(err)
+        {
+            console.log(err);
+            res.end(err);
+        }
+        else
+        {
+            res.redirect('/surveys');
+        }
+        
+    });
+    
 
 };
