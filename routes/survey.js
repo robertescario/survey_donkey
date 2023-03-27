@@ -1,7 +1,19 @@
 let express = require('express');
 let router = express.Router();
 let mongoose = require('mongoose');
+let passport = require('passport');
 let surveyController = require('../controllers/surveys');
+
+//helper function for guard purposes
+function requireAuth(req,res,next)
+{
+    // check if the user is logged in
+    if(!req.isAuthenticated())
+    {
+        return res.redirect('/login');
+    }
+    next();
+}
 
 // GET index page of survey
 router.get('/', surveyController.displaySurveys);
