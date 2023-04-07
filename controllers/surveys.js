@@ -53,7 +53,7 @@ module.exports.addSurvey = (req, res, next) => {
         console.error(err);
         res.end(err);
       } else {
-        res.redirect('/surveys/' + newSurvey._id);
+        res.redirect('/surveys');
       }
     });
   }
@@ -111,6 +111,7 @@ module.exports.editSurvey = (req, res, next) => {
 module.exports.displaySurvey = (req, res, next) => {
   if (!req.user) {
     res.redirect('/login');
+
   }
   else {
     let id = req.params.id;
@@ -121,7 +122,7 @@ module.exports.displaySurvey = (req, res, next) => {
       }
     }).then(survey => {
       //res.json(survey);
-       res.render('surveys/show', {
+      res.render('surveys/show', {
         title: survey.title,
         description: survey.description,
         survey: survey,
@@ -166,7 +167,6 @@ module.exports.displayAddQuestion = (req, res, next) => {
 };
 
 module.exports.addQuestion = (req, res, next) => {
-<<<<<<< HEAD
   if (!req.user) {
     res.redirect('/login');
   }
@@ -201,11 +201,6 @@ module.exports.addQuestion = (req, res, next) => {
       }
     });
   }
-=======
-  // 1. create question
-  // 2. get the question id
-  // 3. update survey by appending the new question_id to the survey.questions field
->>>>>>> 9bd2efc0b72b824a4ce4d43877cab58fec3f0881
 };
 
 module.exports.displayEditQuestion = (req, res, next) => {
@@ -247,8 +242,7 @@ module.exports.editQuestion = (req, res, next) => {
 };
 
 module.exports.destroyQuestion = (req, res, next) => {
-  // 1. delete question record
-  // 2. update survey to remove the question_id from the survey.questions field
+
 };
 
 module.exports.displayAddOption = async (req, res, next) => {
@@ -280,7 +274,6 @@ module.exports.displayAddOption = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
 module.exports.addOption = async (req, res, next) => {
   try {
     const survey = await Survey.findById(req.params.surveyId);
@@ -315,15 +308,3 @@ module.exports.addOption = async (req, res, next) => {
 module.exports.destroyOption = (req, res, next) => {
 
 };
-=======
-module.exports.addOption = (req, res, next) => {
-  // 1. create option
-  // 2. get the new option id
-  // 3. update question by appending the new option_id to question.options field
-};
-
-module.exports.destroyOption = (req, res, next) => {
-  // 1. delete option record
-  // 2. update question to remove the option_id from the question.options field
-};
->>>>>>> 9bd2efc0b72b824a4ce4d43877cab58fec3f0881
