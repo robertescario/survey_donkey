@@ -53,7 +53,7 @@ module.exports.addSurvey = (req, res, next) => {
         console.error(err);
         res.end(err);
       } else {
-        res.redirect('/surveys');
+        res.redirect('/surveys/' + newSurvey._id);
       }
     });
   }
@@ -111,7 +111,6 @@ module.exports.editSurvey = (req, res, next) => {
 module.exports.displaySurvey = (req, res, next) => {
   if (!req.user) {
     res.redirect('/login');
-
   }
   else {
     let id = req.params.id;
@@ -122,7 +121,7 @@ module.exports.displaySurvey = (req, res, next) => {
       }
     }).then(survey => {
       //res.json(survey);
-      res.render('surveys/show', {
+       res.render('surveys/show', {
         title: survey.title,
         description: survey.description,
         survey: survey,
@@ -157,7 +156,9 @@ module.exports.displayAddQuestion = (req, res, next) => {
 };
 
 module.exports.addQuestion = (req, res, next) => {
-
+  // 1. create question
+  // 2. get the question id
+  // 3. update survey by appending the new question_id to the survey.questions field
 };
 
 module.exports.displayEditQuestion = (req, res, next) => {
@@ -169,7 +170,8 @@ module.exports.editQuestion = (req, res, next) => {
 };
 
 module.exports.destroyQuestion = (req, res, next) => {
-
+  // 1. delete question record
+  // 2. update survey to remove the question_id from the survey.questions field
 };
 
 module.exports.displayAddOption = (req, res, next) => {
@@ -177,9 +179,12 @@ module.exports.displayAddOption = (req, res, next) => {
 };
 
 module.exports.addOption = (req, res, next) => {
-
+  // 1. create option
+  // 2. get the new option id
+  // 3. update question by appending the new option_id to question.options field
 };
 
 module.exports.destroyOption = (req, res, next) => {
-
+  // 1. delete option record
+  // 2. update question to remove the option_id from the question.options field
 };
