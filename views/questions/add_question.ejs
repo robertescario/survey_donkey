@@ -1,0 +1,26 @@
+<%-include('../partials/header.ejs')%>
+<%-include('../partials/main_nav.ejs')%>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><%= title %></h3>
+        </div>
+        <div class="panel-body">
+          <form action="/surveys/<%= surveyId %>/questions/add" method="POST" role="form">
+            <div class="form-group">
+              <label for="question_text">Question:</label>
+              <input type="text" class="form-control" id="question_text" name="question_text" placeholder="Enter question" required>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Question</button>
+            <a href="/surveys/<%= surveyId %>" class="btn btn-default">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%-include('../partials/footer.ejs')%>

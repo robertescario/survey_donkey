@@ -30,9 +30,9 @@ router.get('/:id', surveyController.displaySurvey);
 // GET process the delete record by survey id
 router.get('/:id/delete', surveyController.destroySurvey);
 // GET the ADD question form
-router.get('/:id/questions/add', surveyController.displayAddQuestion);
+router.get('/:surveyId/questions/add', surveyController.displayAddQuestion);
 // POST the question data to create record
-router.post('/:id/questions/add', surveyController.addQuestion);
+router.post('/:surveyId/questions/add', surveyController.addQuestion);
 // GET the EDIT question form
 router.get('/:id/questions/:qid/edit', surveyController.displayEditQuestion);
 // POST the survey data to update record with id = :id
@@ -42,9 +42,9 @@ router.get('/:id/questions/:qid/delete', surveyController.destroyQuestion);
 
 
 // GET the ADD option form
-router.get('/:id/questions/:qid/options/add', surveyController.displayAddOption);
+router.get('/:surveyId/questions/:questionId/options/add', surveyController.displayAddOption);
 // POST the option data to create record
-router.post('/:id/questions/:qid/options/add', surveyController.addOption);
+router.post('/:surveyId/questions/:questionId/options/add', surveyController.addOption);
 // GET process the delete record by option id
 router.get('/:id/questions/:qid/options/:oid/delete', surveyController.destroyOption);
 

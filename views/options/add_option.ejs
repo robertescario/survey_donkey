@@ -1,0 +1,25 @@
+<%-include('../partials/header.ejs')%>
+<%-include('../partials/main_nav.ejs')%>
+<!--Main nav Navigation-->
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-10">
+      <h3>Add Option</h3>
+      <hr>
+      <form action="/surveys/<%= surveyId %>/questions/<%= questionId %>/options/add" method="POST">
+        <div class="form-group">
+          <label for="option_text">Option Text:</label>
+          <input type="text" id="option_text" name="option_text" class="form-control" placeholder="Enter option text" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Option</button>
+          <a href="/surveys/<%= surveyId %>" class="btn btn-default">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--Script section-->
+<%-include('../partials/footer.ejs')%>

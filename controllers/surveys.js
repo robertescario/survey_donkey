@@ -153,15 +153,88 @@ module.exports.destroySurvey = (req, res, next) => {
 };
 
 module.exports.displayAddQuestion = (req, res, next) => {
-
+  if (!req.user) {
+    res.redirect('/login');
+  }
+  else {
+    let surveyId = req.params.surveyId;
+    res.render('questions/add_question', {
+      title: 'Add Question',
+      surveyId: surveyId,
+      displayName: req.user ? req.user.displayName : ''
+    });
+  }
 };
 
 module.exports.addQuestion = (req, res, next) => {
+  if (!req.user) {
+    res.redirect('/login');
+  }
+  else {
+    let surveyId = req.params.surveyId; // Change this line
+    let newQuestion = new Question({
+      question_text: req.body.question_text,
+      survey: surveyId
+    });
 
+    newQuestion.save((err, question) => {
+      if (err) {
+        console.error(err);
+        res.end(err);
+      }
+      else {
+        // Update the survey with the new question
+        Survey.findByIdAndUpdate(
+          surveyId,
+          { $push: { questions: question._id } },
+          { new: true, useFindAndModify: false },
+          (err, updatedSurvey) => {
+            if (err) {
+              console.error(err);
+              res.end(err);
+            }
+            else {
+              res.redirect('/surveys/' + surveyId);
+            }
+          }
+        );
+      }
+    });
+  }
 };
 
 module.exports.displayEditQuestion = (req, res, next) => {
+  if (!req.user) {
+    res.redirect('/login');
+  } else {
+    let questionId = req.params.questionId;
+    let newOption = new Option({
+      option_text: req.body.option_text,
+      question: questionId
+    });
 
+    newOption.save((err, option) => {
+      if (err) {
+        console.error(err);
+        res.end(err);
+      } else {
+        // Update the question with the new option
+        Question.findByIdAndUpdate(
+          questionId,
+          { $push: { options: option._id } },
+          { new: true, useFindAndModify: false },
+          (err, updatedQuestion) => {
+            if (err) {
+              console.error(err);
+              res.end(err);
+            } else {
+              res.redirect('/surveys'); // Redirect to the desired page, e.g. survey detail page
+            }
+          }
+        );
+      }
+    });
+  }
 };
 
 module.exports.editQuestion = (req, res, next) => {
@@ -172,12 +245,64 @@ module.exports.destroyQuestion = (req, res, next) => {
 
 };
 
-module.exports.displayAddOption = (req, res, next) => {
+module.exports.displayAddOption = async (req, res, next) => {
+  try {
+    const survey = await Survey.findById(req.params.surveyId).populate({ path: 'questions', populate: { path: 'options' } });
+    if (!survey) {
+      req.flash('error', 'Survey not found');
+      return res.redirect('/surveys');
+    }
 
+    const question = survey.questions.find(q => q._id.toString() === req.params.questionId);
+    if (!question) {
+      req.flash('error', 'Question not found');
+      return res.redirect(`/surveys/${req.params.surveyId}`);
+    }
+
+    res.render('options/add_option', {
+      title: 'Add Option',
+      surveyId: req.params.surveyId,
+      questionId: req.params.questionId,
+      survey: survey,
+      question: question,
+      displayName: req.user ? req.user.displayName : ''
+    });
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'An error occurred while loading the page');
+    return res.redirect('/surveys');
+  }
 };
 
-module.exports.addOption = (req, res, next) => {
+module.exports.addOption = async (req, res, next) => {
+  try {
+    const survey = await Survey.findById(req.params.surveyId);
+    if (!survey) {
+      req.flash('error', 'Survey not found');
+      return res.redirect('/surveys');
+    }
 
+    const question = await Question.findById(req.params.questionId);
+    if (!question) {
+      req.flash('error', 'Question not found');
+      return res.redirect(`/surveys/${req.params.surveyId}`);
+    }
+
+    const newOption = new Option({
+      option_text: req.body.option_text,
+      question: question._id
+    });
+
+    await newOption.save();
+    question.options.push(newOption);
+    await question.save();
+    req.flash('success', 'Option added successfully');
+    return res.redirect(`/surveys/${req.params.surveyId}`);
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'An error occurred while adding the option');
+    return res.redirect(`/surveys/${req.params.surveyId}`);
+  }
 };
 
 module.exports.destroyOption = (req, res, next) => {
