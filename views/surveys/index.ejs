@@ -25,7 +25,7 @@
           <tbody>
             <% for (let count = 0; count < surveys.length; count++) { %>
               <tr>
-                <td><%= surveys[count].title %></td>
+                <td><a href="/surveys/<%= surveys[count]._id%>/"><%= surveys[count].title %></a></td>
                 <td class="text-center"><%= surveys[count].description %></td>
                 <% if (displayName) { %>
                   <td class="text-center">

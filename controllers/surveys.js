@@ -1,6 +1,8 @@
 let express = require('express');
 let router = express.Router();
 const Survey = require('../models/survey');
+const Question = require('../models/question');
+const Option = require('../models/option');
 
 module.exports.displaySurveys = (req, res, next) => { 
   // find all surveys in the surveys collection
@@ -107,7 +109,27 @@ module.exports.editSurvey = (req, res, next) => {
 };
 
 module.exports.displaySurvey = (req, res, next) => {
+  if (!req.user) {
+    res.redirect('/login');
 
+  }
+  else {
+    let id = req.params.id;
+    Survey.findById(id).populate({ 
+      path: "questions",
+      populate: {
+        path: "options"
+      }
+    }).then(survey => {
+      //res.json(survey);
+      res.render('surveys/show', {
+        title: survey.title,
+        description: survey.description,
+        survey: survey,
+        displayName: req.user ? req.user.displayName : ''
+      })
+    })
+  }
 };
 
 module.exports.destroySurvey = (req, res, next) => {
@@ -128,4 +150,36 @@ module.exports.destroySurvey = (req, res, next) => {
 
     });
   }
+};
+
+module.exports.displayAddQuestion = (req, res, next) => {
+
+};
+
+module.exports.addQuestion = (req, res, next) => {
+
+};
+
+module.exports.displayEditQuestion = (req, res, next) => {
+
+};
+
+module.exports.editQuestion = (req, res, next) => {
+
+};
+
+module.exports.destroyQuestion = (req, res, next) => {
+
+};
+
+module.exports.displayAddOption = (req, res, next) => {
+
+};
+
+module.exports.addOption = (req, res, next) => {
+
+};
+
+module.exports.destroyOption = (req, res, next) => {
+
 };

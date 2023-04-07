@@ -29,5 +29,23 @@ router.post('/:id/edit', surveyController.editSurvey);
 router.get('/:id', surveyController.displaySurvey);
 // GET process the delete record by survey id
 router.get('/:id/delete', surveyController.destroySurvey);
+// GET the ADD question form
+router.get('/:id/questions/add', surveyController.displayAddQuestion);
+// POST the question data to create record
+router.post('/:id/questions/add', surveyController.addQuestion);
+// GET the EDIT question form
+router.get('/:id/questions/:qid/edit', surveyController.displayEditQuestion);
+// POST the survey data to update record with id = :id
+router.post('/:id/questions/:qid/edit', surveyController.editQuestion);
+// GET process the delete record by question id
+router.get('/:id/questions/:qid/delete', surveyController.destroyQuestion);
+
+
+// GET the ADD option form
+router.get('/:id/questions/:qid/options/add', surveyController.displayAddOption);
+// POST the option data to create record
+router.post('/:id/questions/:qid/options/add', surveyController.addOption);
+// GET process the delete record by option id
+router.get('/:id/questions/:qid/options/:oid/delete', surveyController.destroyOption);
 
 module.exports = router;

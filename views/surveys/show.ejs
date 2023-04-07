@@ -1,0 +1,40 @@
+<%-include('../partials/header.ejs')%>
+<%-include('../partials/main_nav.ejs')%>
+<!--Main nav Navigation-->
+  
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-10">
+        <h3>Title: <%= survey.title %></h3>
+        <h4>Description: <%= survey.description %></h4>
+        <br/>
+        <a href="/surveys/<%= survey._id%>/questions/add" class="btn btn-primary"><i class="fa fa-plus"></i> Add Question</a>
+        <br/>
+        <br/>
+        <ol>
+            <% for (let count = 0; count < survey.questions.length; count++) { %>
+                <li>
+                    <%= survey.questions[count].question_text %>
+                    <a href="/surveys/<%=survey._id%>/questions/<%=survey.questions[count]._id%>/edit" class="btn btn-primary"><i class="fas fa-pencil-alt"></i>Edit</a>
+                    <a href="/surveys/<%=survey._id%>/questions/<%=survey.questions[count]._id%>/delete" class="btn btn-danger"><i class="fas fa-trash-alt"></i>Delete</a>
+                </li>
+                <ul>
+                    <% for (let ctr = 0; ctr < survey.questions[count].options.length; ctr++) { %>
+                        <li>
+                            <%= survey.questions[count].options[ctr].option_text %>
+                            <a href="/surveys/<%=survey._id%>/questions/<%=survey.questions[count]._id%>/options/<%=survey.questions[count].options[ctr]._id%>/delete" class="btn btn-danger"><i class="fas fa-trash-alt"></i>Delete</a>
+                        </li>
+                    <% } %>
+                </ul>
+                <a href="/surveys/<%= survey._id%>/questions/<%= survey.questions[count]._id%>/add" class="btn btn-primary"><i class="fa fa-plus"></i> Add Option</a>
+                <br/>
+                <br/>
+            <% } %> 
+        </ol>
+    </div>
+  </div>
+</div>
+
+
+<!--Script section-->
+<%-include('../partials/footer.ejs')%>
