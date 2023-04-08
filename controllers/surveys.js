@@ -249,8 +249,17 @@ module.exports.editQuestion = (req, res, next) => {
 };
 
 module.exports.destroyQuestion = (req, res, next) => {
-
-};
+    let questionId = req.params.qid;
+    Question.remove({_id: questionId}, (err) => {
+      if (err) {
+        console.error(err);
+        res.end(err);
+      } else {
+        // Redirect the user back to the survey page after the question is deleted
+        res.redirect('/surveys/' + req.params.id);
+      }
+    });
+  };  
 
 module.exports.displayAddOption = async (req, res, next) => {
   try {
@@ -313,5 +322,14 @@ module.exports.addOption = async (req, res, next) => {
 };
 
 module.exports.destroyOption = (req, res, next) => {
-
+  let optionId = req.params.oid;
+  Option.findByIdAndRemove(optionId, (err) => {
+    if (err) {
+      console.error(err);
+      res.end(err);
+    } else {
+      // Redirect to survey page after the option is deleted
+      return res.redirect('/surveys');
+    }
+  });
 };
