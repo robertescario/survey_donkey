@@ -3,6 +3,7 @@ let router = express.Router();
 const Survey = require('../models/survey');
 const Question = require('../models/question');
 const Option = require('../models/option');
+const question = require('../models/question');
 
 module.exports.displaySurveys = (req, res, next) => { 
   // find all surveys in the surveys collection
@@ -204,40 +205,46 @@ module.exports.addQuestion = (req, res, next) => {
 };
 
 module.exports.displayEditQuestion = (req, res, next) => {
-  if (!req.user) {
-    res.redirect('/login');
-  } else {
-    let questionId = req.params.questionId;
-    let newOption = new Option({
-      option_text: req.body.option_text,
-      question: questionId
-    });
-
-    newOption.save((err, option) => {
+  
+  Question.findById(req.params.qid, (err, question) => {
       if (err) {
         console.error(err);
         res.end(err);
       } else {
-        // Update the question with the new option
-        Question.findByIdAndUpdate(
-          questionId,
-          { $push: { options: option._id } },
-          { new: true, useFindAndModify: false },
-          (err, updatedQuestion) => {
-            if (err) {
-              console.error(err);
-              res.end(err);
-            } else {
-              res.redirect('/surveys'); // Redirect to the desired page, e.g. survey detail page
-            }
-          }
-        );
+        res.render('questions/edit_question', {
+          question: question,
+          title:'Edit Question',
+          displayName: req.user ? req.user.displayName : ''
+        });
       }
     });
-  }
 };
 
 module.exports.editQuestion = (req, res, next) => {
+
+  if (!req.user) {
+    res.redirect('/login');
+  } else {
+    let questionId = req.params.qid;
+
+    let UpdateQuestion = new Question({
+      _id: questionId,
+      survey: req.params.id,
+      question_text: req.body.question_text
+    });
+
+    
+  Question.updateOne({_id: questionId},UpdateQuestion,(err) =>{
+     if (err) {
+      console.error(err);
+      res.end(err);
+    }else{
+      res.redirect('/surveys/' + req.params.id);
+
+    } })
+
+   
+  }
 
 };
 

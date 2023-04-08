@@ -1,0 +1,26 @@
+<%-include('../partials/header.ejs')%>
+<%-include('../partials/main_nav.ejs')%>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+        </div>
+        <div class="panel-body">
+          <form class="form" method="POST" >
+            <div class="form-group">
+              <label for="question_text">Edit Question:</label>
+              <input type="text" class="form-control" id="question_text" name="question_text" placeholder="Enter question" value="<%= question.question_text %>" >
+            </div>
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-edit"></i> Edit</button>
+            <a href="/surveys" class="btn btn-default">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%-include('../partials/footer.ejs')%>
