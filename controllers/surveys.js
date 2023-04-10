@@ -111,8 +111,21 @@ module.exports.editSurvey = (req, res, next) => {
 
 module.exports.displaySurvey = (req, res, next) => {
   if (!req.user) {
-    res.redirect('/login');
-
+    //res.redirect('/login');
+    let id = req.params.id;
+    Survey.findById(id).populate({ 
+      path: "questions",
+      populate: {
+        path: "options"
+      }
+    }).then(survey => {
+      //res.json(survey);
+      res.render('surveys/submission', {
+        title: survey.title,
+        description: survey.description,
+        survey: survey
+      })
+    })
   }
   else {
     let id = req.params.id;
@@ -306,6 +319,7 @@ module.exports.addOption = async (req, res, next) => {
 
     const newOption = new Option({
       option_text: req.body.option_text,
+      option_count: 0,
       question: question._id
     });
 
@@ -332,4 +346,52 @@ module.exports.destroyOption = (req, res, next) => {
       return res.redirect('/surveys');
     }
   });
+};
+
+module.exports.submitSurvey = (req, res, next) => {
+
+    return res.redirect('/surveys');
+
+/*    let id = req.params.id;
+    Survey.findById(id).populate({ 
+      path: "questions",
+      populate: {
+        path: "options"
+      }
+    }).then(survey => {
+      for( let count=1; count <= survey.questions.length; count++) {
+        let key = "question" + count;
+        console.log(req.body[key]);
+
+        optionId = req.body[key];
+
+        Option.findById(optionId).then(option => {
+           let updateOption = new Option({
+            _id: option._id,
+            option_text: option.option_text,
+            //option_count: option.option_count+1,
+            question: option.question
+          });
+
+          Option.updateOne({_id: optionId},updateOption,(err) =>{
+            if (err) {
+            console.error(err);
+            res.end(err);
+          }else{
+            console.log(optionId);
+      
+          } })
+      });
+
+      
+
+
+          }
+    });
+    /*req.body.entries().forEach(([key, value]) => {
+      console.log(value);
+    });
+    */
+  
+
 };

@@ -47,5 +47,7 @@ router.get('/:surveyId/questions/:questionId/options/add', surveyController.disp
 router.post('/:surveyId/questions/:questionId/options/add', surveyController.addOption);
 // GET process the delete record by option id
 router.get('/:id/questions/:qid/options/:oid/delete', surveyController.destroyOption);
+// Add Submit functiuon
+router.post('/:id/submission', surveyController.submitSurvey);
 
 module.exports = router;

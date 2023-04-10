@@ -1,0 +1,38 @@
+<%-include('../partials/header.ejs')%>
+<%-include('../partials/main_nav.ejs')%>
+<!--Main nav Navigation-->
+  
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-10">
+        
+        <h3>Title: <%= survey.title %></h3>
+        <h4>Description: <%= survey.description %></h4>
+        <br/>
+        <form action="/surveys/<%= survey.id %>/submission" method="POST" role="form">
+        <ol>
+            <% for (let count = 0; count < survey.questions.length; count++) { %>
+                <li>
+                    <%= survey.questions[count].question_text %>
+                </li>
+                <ul>
+                    <% for (let ctr = 0; ctr < survey.questions[count].options.length; ctr++) { %>
+                        <li>
+                            <input type="radio" id="question<%= count + 1 %>_option<%= ctr + 1 %>" name="question<%= count + 1 %>" value="<%= survey.questions[count].options[ctr]._id %>">
+                            <label for="question<%= count + 1 %>_option<%= ctr + 1 %>"><%= survey.questions[count].options[ctr].option_text %></label>
+                        </li>
+                    <% } %>
+                </ul>
+                <br/>
+            <% } %> 
+            <button type="submit" onclick="alert('Thank you for submitting!') "class="btn btn-primary"><i></i>Submit</button>
+            <br/>
+        </ol>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+<!--Script section-->
+<%-include('../partials/footer.ejs')%>

@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 // create a model class
 let Option = mongoose.Schema({
   option_text: String,
+  optiont_count: Number,
   question: {
     type: Schema.Types.ObjectId,
     ref: "Question"
