@@ -3,7 +3,6 @@ let router = express.Router();
 const Survey = require('../models/survey');
 const Question = require('../models/question');
 const Option = require('../models/option');
-const question = require('../models/question');
 
 module.exports.displaySurveys = (req, res, next) => { 
   // find all surveys in the surveys collection
@@ -45,7 +44,8 @@ module.exports.addSurvey = (req, res, next) => {
     // Get form data from request body
     let newSurvey = Survey({
       title: req.body.title,
-      description: req.body.description
+      description: req.body.description,
+      survey_count: 0
     });
 
     // Save the new survey to the database
@@ -172,7 +172,7 @@ module.exports.displayAddQuestion = (req, res, next) => {
   }
   else {
     let surveyId = req.params.surveyId;
-    res.render('questions/add_question', {
+    res.render('questions/add', {
       title: 'Add Question',
       surveyId: surveyId,
       displayName: req.user ? req.user.displayName : ''
@@ -224,7 +224,7 @@ module.exports.displayEditQuestion = (req, res, next) => {
         console.error(err);
         res.end(err);
       } else {
-        res.render('questions/edit_question', {
+        res.render('questions/edit', {
           question: question,
           title:'Edit Question',
           displayName: req.user ? req.user.displayName : ''
@@ -240,14 +240,14 @@ module.exports.editQuestion = (req, res, next) => {
   } else {
     let questionId = req.params.qid;
 
-    let UpdateQuestion = new Question({
+    let updateQuestion = new Question({
       _id: questionId,
       survey: req.params.id,
       question_text: req.body.question_text
     });
 
     
-  Question.updateOne({_id: questionId},UpdateQuestion,(err) =>{
+  Question.updateOne({_id: questionId}, updateQuestion,(err) =>{
      if (err) {
       console.error(err);
       res.end(err);
@@ -288,7 +288,7 @@ module.exports.displayAddOption = async (req, res, next) => {
       return res.redirect(`/surveys/${req.params.surveyId}`);
     }
 
-    res.render('options/add_option', {
+    res.render('options/add', {
       title: 'Add Option',
       surveyId: req.params.surveyId,
       questionId: req.params.questionId,
@@ -348,50 +348,45 @@ module.exports.destroyOption = (req, res, next) => {
   });
 };
 
-module.exports.submitSurvey = (req, res, next) => {
-
-    return res.redirect('/surveys');
-
-/*    let id = req.params.id;
+module.exports.submitSurvey = async (req, res, next) => {
+  try{
+    let id = req.params.id;
     Survey.findById(id).populate({ 
       path: "questions",
       populate: {
         path: "options"
       }
     }).then(survey => {
+      let newCount = 1;
+      if(!isNaN(survey.survey_count)){
+        newCount = survey.survey_count + 1;
+      }
+      survey.survey_count = newCount;
+      survey.save();
       for( let count=1; count <= survey.questions.length; count++) {
         let key = "question" + count;
-        console.log(req.body[key]);
-
         optionId = req.body[key];
-
+        
         Option.findById(optionId).then(option => {
-           let updateOption = new Option({
-            _id: option._id,
-            option_text: option.option_text,
-            //option_count: option.option_count+1,
-            question: option.question
-          });
-
-          Option.updateOne({_id: optionId},updateOption,(err) =>{
-            if (err) {
-            console.error(err);
-            res.end(err);
-          }else{
-            console.log(optionId);
-      
-          } })
-      });
-
-      
-
-
+          let newValue = 1;
+          if(isNaN(option.option_count)) {
+            newValue = 1;
           }
+          else {
+            newValue = option.option_count + 1;
+          }
+          option.option_count = newValue;
+          option.save(); 
+        });
+      }
     });
-    /*req.body.entries().forEach(([key, value]) => {
-      console.log(value);
-    });
-    */
+    return res.redirect('/surveys');
+  }
+  catch (err) {
+    console.error(err);
+    req.flash('error', 'An error occurred while submitting survey.');
+    return res.redirect(`/surveys/${req.params.id}`);
+  }
   
-
+  
 };

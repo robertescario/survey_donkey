@@ -17,10 +17,9 @@
                 </li>
                 <ul>
                     <% for (let ctr = 0; ctr < survey.questions[count].options.length; ctr++) { %>
-                        <li>
-                            <input type="radio" id="question<%= count + 1 %>_option<%= ctr + 1 %>" name="question<%= count + 1 %>" value="<%= survey.questions[count].options[ctr]._id %>">
-                            <label for="question<%= count + 1 %>_option<%= ctr + 1 %>"><%= survey.questions[count].options[ctr].option_text %></label>
-                        </li>
+                        <input type="radio" id="question<%= count + 1 %>_option<%= ctr + 1 %>" name="question<%= count + 1 %>" value="<%= survey.questions[count].options[ctr]._id %>">
+                        <label for="question<%= count + 1 %>_option<%= ctr + 1 %>"><%= survey.questions[count].options[ctr].option_text %></label>
+                        <br/>
                     <% } %>
                 </ul>
                 <br/>

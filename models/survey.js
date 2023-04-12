@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 let Survey = mongoose.Schema({
     title: String,
     description: String,
+    survey_count: Number,
     questions: [{
       type: Schema.Types.ObjectId,
       ref: "Question"
