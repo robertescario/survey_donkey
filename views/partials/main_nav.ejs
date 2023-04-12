@@ -3,37 +3,33 @@
 		<a class="navbar-brand" href="#">
 			<img src="/images/logo-color.png" width="100" height="100">
 		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav ml-auto">
+		<ul class="nav navbar-nav col-12 col-lg-auto my-2 justify-content-center ml-auto">
 		<% if(title=="Home"){%>
 			<li class="nav-item active">
 		<%}else{%>
-    	<li class="nav-item">
+    		<li class="nav-item">
     	<%}%>
-  			<a class="nav-link active" aria-current="page" href="/home"><i class="fa-solid fa-house-chimney"></i>Home</a>
+  				<a class="nav-link active" aria-current="page" href="/home"><i class="fa-solid fa-house-chimney"></i>Home</a>
 			</li>
 		<% if(title=="Surveys"){%>
 			<li class="nav-item active">
   		<%}else{%>
-    	<li class="nav-item">
+    		<li class="nav-item">
     	<%}%> 
-  			<a class="nav-link active" aria-current="page" href="/surveys"><i class="fa-solid fa-poll"></i>Surveys</a>
+  				<a class="nav-link active" aria-current="page" href="/surveys"><i class="fa-solid fa-poll"></i>Surveys</a>
 			</li>
-	
-			<%if(typeof displayName=='string' && displayName){%>
-				<li class="navbar-text"><i class="fas fa-lg fa-user"></i>Welcome, <%=displayName%>
-				</li>
-				<li class="nav-item"><a href="/logout" class="nav-link"><i
-					  class="fas fa-lg fa-sign-out-alt"></i>logout</a></li>
-				<%}else{%>
-				  <li class="nav-item"><a href="/login" class="nav-link"><i
-						class="fas fa-lg fa-sign-in-alt"></i>Login</a></li>
-				  <%}%>
-
-
+		<%if(typeof displayName=='string' && displayName){%>
+			<li class="navbar-text"><i class="fas fa-lg fa-user"></i>Welcome, <%=displayName%></li>
+			<li class="nav-item">
+				<a href="/logout" class="nav-link"><i class="fas fa-lg fa-sign-out-alt"></i>logout</a>
+			</li>
+		<%}else{%>
+			<li class="nav-item"><a href="/login" class="nav-link"><i class="fas fa-lg fa-sign-in-alt"></i>Login</a></li>
+		<%}%>
 		</ul>
 		</div>
 	</div>
