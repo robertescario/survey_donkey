@@ -233,28 +233,33 @@ module.exports.displayEditQuestion = (req, res, next) => {
     });
 };
 
-module.exports.editQuestion = (req, res, next) => {
+module.exports.editQuestion = async (req, res, next) => {
 
   if (!req.user) {
     res.redirect('/login');
   } else {
-    let questionId = req.params.qid;
-
-    let updateQuestion = new Question({
-      _id: questionId,
-      survey: req.params.id,
-      question_text: req.body.question_text
-    });
-
-    
-  Question.updateOne({_id: questionId}, updateQuestion,(err) =>{
-     if (err) {
-      console.error(err);
-      res.end(err);
-    }else{
+    try{
+      let questionId = req.params.qid;
+      const question = await Question.findById(req.params.qid);
+      if (!question) {
+        req.flash('error', 'Question not found');
+        return res.redirect('/surveys');
+      }
+      question.question_text = req.body.question_text;
+      question.save();
+      let updateQuestion = new Question({
+        _id: questionId,
+        survey: req.params.id,
+        question_text: req.body.question_text
+      });
       res.redirect('/surveys/' + req.params.id);
-
-    } })
+    }
+    catch (err) {
+      console.error(err);
+      req.flash('error', 'An error occurred while updating question.');
+      return res.redirect(`/surveys/${req.params.id}`);
+    }
+    
 
    
   }
